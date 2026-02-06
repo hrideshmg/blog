@@ -9,7 +9,7 @@ image: cover1.jpg
 ---
 > **Disclaimer:** Do not take anything written in this blog as investment advice, please do your own research before making any financial decisions.
 
-A few months ago, when I started getting into finance, [Zerodha Varsity](https://zerodha.com/varsity/modules/) was my go-to resource. I owe much of my finance/stock-market knowledge to the excellent modules over there.
+A few months ago, when I started getting into finance, [Zerodha Varsity](https://zerodha.com/varsity/) was my go-to resource. I owe much of my finance/stock-market knowledge to the excellent modules over there.
 
 While I reading through the mutual fund module, one article in particular stood out to me - ["Smart-Beta Funds"](https://zerodha.com/varsity/chapter/smart-beta-funds/). What surprised me wasn't the concept itself, but how little discussion it had compared to other varsity articles. While most modules had hundreds if not thousands of comments, this one had a meagre 25-30.
 
@@ -25,7 +25,7 @@ Here is something that may surprise a lot of you: Index funds outperform the maj
 Don't just take my word for it though, investing legend Warren Buffet once remarked —
 > "If a statue is ever erected to honor the person who has done the most for American investors, the handsdown choice should be Jack Bogle."
 
-Jack Bogle being, of course, the inventor of the world’s first index fund (the Vanguard 500 Index Fund). <br>If you're someone who is more data inclined, feel free to take a look at the [SPIVA India](https://www.spglobal.com/spdji/en/documents/spiva/spiva-india-scorecard-mid-year-2025.pdf) reports published by S&P global, which compares the performance of active and passive (index) funds. The 3 and 5-year horizons are of particular interest as 80-90% of active funds see underperformance compared to passive ones.
+Jack Bogle being, of course, the inventor of the world’s first index fund (the Vanguard 500 Index Fund). <br>If you're someone who is more data inclined, feel free to take a look at the [SPIVA India](https://web.archive.org/web/20251009172652/https://www.spglobal.com/spdji/en/documents/spiva/spiva-india-scorecard-mid-year-2025.pdf) reports published by S&P global, which compares the performance of active and passive (index) funds. The 3 and 5-year horizons are of particular interest as 80-90% of active funds see underperformance compared to passive ones.
 
 Index funds represent the purest form of passive investing, but they don't represent the totality of the spectrum. What if there was a way to tweak certain characteristics of the index? That is where  the magic of Smart-Beta funds come into play.
 
@@ -40,7 +40,7 @@ Factor based funds sit between active and passive funds. They still have low exp
 - Quality (strong balance sheets)
 - Low Volatility (consistent share price)
 
-To take momentum as an example, a momentum-factor based fund (like the [Nifty Midcap150 Momentum 50](https://www.niftyindices.com/indices/equity/strategy-indices/nifty-midcap150-momentum-50)) would pick stocks which show the largest recent returns in a specific time period. These funds are usually rebalanced every 6 months or so.
+To take momentum as an example, a momentum-factor based fund (like the [Nifty Midcap150 Momentum 50](https://web.archive.org/web/20251207192845/https://niftyindices.com/indices/equity/strategy-indices/nifty-midcap150-momentum-50)) would pick stocks which show the largest recent returns in a specific time period. These funds are usually rebalanced every 6 months or so.
 
 Smart-Beta funds are passive at their core, but they put a spin on the traditional index fund by using specific formulas to decide which stocks become part of the fund.
 
