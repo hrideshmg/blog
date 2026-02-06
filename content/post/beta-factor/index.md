@@ -5,7 +5,7 @@ slug: smart-beta
 date: 2026-01-08
 categories: finance
 draft: false
-image: cover1.jpg
+image: cover.jpg
 ---
 > **Disclaimer:** Do not take anything written in this blog as investment advice, please do your own research before making any financial decisions.
 
