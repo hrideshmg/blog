@@ -326,12 +326,19 @@ This is precisely what [rolling returns](https://zerodha.com/varsity/chapter/rol
 
 ### Correlation Matrix
 
+
 <div class="table-scroll">
   <style>
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1em 0;
+  }
   .correlation-matrix {
     font-size: 0.85em;
     background-color: #1a1a1a;
     color: #e0e0e0;
+    min-width: 600px;
   }
   .correlation-matrix th {
     background-color: #2a2a2a;
@@ -340,16 +347,21 @@ This is precisely what [rolling returns](https://zerodha.com/varsity/chapter/rol
     padding: 8px 4px;
     font-size: 0.75em;
     border: 1px solid #3a3a3a;
+    white-space: nowrap;
   }
   .correlation-matrix td {
     text-align: center;
     padding: 6px 4px;
     border: 1px solid #3a3a3a;
+    white-space: nowrap;
   }
   .correlation-matrix tbody tr td:first-child {
     font-weight: 600;
     text-align: left;
     background-color: #2a2a2a;
+    position: sticky;
+    left: 0;
+    z-index: 1;
   }
   .corr-high { background-color: #1a3a2a; color: #90ee90; }
   .corr-med { background-color: #3a3a1a; color: #ffd700; }
