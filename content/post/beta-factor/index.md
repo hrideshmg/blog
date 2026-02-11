@@ -54,12 +54,12 @@ However, keep in mind that all of this analysis was done on U.S. markets. I coul
 So, naturally, I did what any bored computer science student with too much time on their hands would do — I wrote some code to analyze the historical performance myself :)
 
 ## Digging Into The Data
-Now, fair warning! I'm not a data scientist or a research analyst. So there may be some errors that have crept in due to my inexperience. If you wish to proofread it, the colab notebook used for generating the below insights is open-source and available [here](https://github.com/hrideshmg/smart-beta-analysis).
+Now, fair warning! I'm not a data scientist or a research analyst. So there may be some errors that have crept in due to my inexperience. If you wish to proofread it, the colab notebook and raw price data used for generating the below insights is open-source and available [here](https://github.com/hrideshmg/smart-beta-analysis).
 
-One important thing to note is that **past performance are not indicative of future returns**. That said, I still do think that historical data is a useful tool, this article wouldn't exist otherwise ;)
+One important thing to remember is that **past performance are not indicative of future returns**. That said, I still do think that historical data is a useful tool, this article wouldn't exist otherwise ;)
 
 ### Source
-The stock market data for the different indices was obtained from NSE's website. I've used the past 10 years stock data from `01-01-2015` to `25-04-2025`. The choice of 10 years was, to be honest, completely arbitrary, it just felt like a good enough sample space when I ran the program.
+The stock market data for the different indices was obtained from NSE's website. I've used the past 10 years stock data from `01-01-2015` to `25-04-2025`. The choice of 10 years was, to be honest, completely arbitrary, it just felt like a good enough sample space when I did this analysis.
 
 I had randomly chosen the following few indices for comparison:
 - Nifty 50 (Benchmark)
