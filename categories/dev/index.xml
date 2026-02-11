@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dev on Hridesh MG</title><link>https://hrideshmg.com/categories/dev/</link><description>Recent content in Dev on Hridesh MG</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://hrideshmg.com/categories/dev/index.xml" rel="self" type="application/rss+xml"/><item><title>The Key That Did Nothing: My Journey Into the Linux Kernel</title><link>https://hrideshmg.com/p/reversing-turbo/</link><pubDate>Sun, 20 Jul 2025 00:00:00 +0000</pubDate><guid>https://hrideshmg.com/p/reversing-turbo/</guid><description>&lt;img src="https://hrideshmg.com/p/reversing-turbo/cover.png" alt="Featured image of post The Key That Did Nothing: My Journey Into the Linux Kernel" /&gt;&lt;p&gt;As promised on my &lt;a class="link" href="https://hrideshmg.com/p/lfx-mentorship/#enabling-turbo-support-on-my-laptop" &gt;blog post&lt;/a&gt; about the Linux Kernel mentorship program, this article will be about my endeavours in trying to enable turbo support for my laptop on Linux.&lt;/p&gt;
+&lt;h2 id="how-it-all-began"&gt;How it all began
+&lt;/h2&gt;&lt;p&gt;It all started one day when I was sitting in front of my laptop completely zoned out. My eyes glanced upon the keyboard and I caught myself staring at a key which usually opens an app to change performance profiles of the laptop.&lt;/p&gt;
+&lt;p&gt;Now, much to the surprise of nobody, this key did not do anything on Linux since the NitroSense app (as is the case with most proprietary software) only works on Windows, regardless, I still wondered if it was possible to change thermal profiles on Linux. To my surprise, someone had already made a &lt;a class="link" href="https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module" target="_blank" rel="noopener"
+&gt;kernel module&lt;/a&gt; for this purpose! Unfortunately (or fortunately, since we wouldn&amp;rsquo;t have this article otherwise :)) it only supported the Acer Predator Series of laptops, whereas my laptop was from the Nitro Series.&lt;/p&gt;
+&lt;p&gt;Anyways, it proved as a good starting point and while going through the source code of the project, I realized that this module was nothing more than a modified fork of a module from the platform profile subsystem on the kernel tree.&lt;/p&gt;
+&lt;h2 id="let-the-tinkering-begin"&gt;Let the tinkering begin!
+&lt;/h2&gt;&lt;h3 id="finding-the-hidden-interface"&gt;Finding The Hidden Interface
+&lt;/h3&gt;&lt;p&gt;After a brief skim through the project, I understood that things like RGB LEDs, fan profiles and certain other hardware related functionalities are often controlled through something known as &lt;a class="link" href="https://en.wikipedia.org/wiki/Windows_Management_Instrumentation" target="_blank" rel="noopener"
+&gt;WMI&lt;/a&gt;, during this phase I also chanced upon a youtube &lt;a class="link" href="https://www.youtube.com/watch?v=97-WNhUmoig&amp;amp;list=PLv2kA4LxAI4Dq2ic_hU9bdvxIzoz5SzBr" target="_blank" rel="noopener"
+&gt;miniseries&lt;/a&gt; created by the author of the project which gave me some great insight into how this project works under the hood.&lt;/p&gt;
+&lt;p&gt;In short, the WMI &lt;a class="link" href="https://docs.kernel.org/wmi/acpi-interface.html" target="_blank" rel="noopener"
+&gt;interface&lt;/a&gt; allows software to communicate with the hardware by sending certain commands. These commands are handled by special WMI entries defined in the ACPI tables stored in the system firmware. That&amp;rsquo;s a whole lot of words just to say — system send command, hardware do thing.&lt;/p&gt;
+&lt;h3 id="playing-around-with-wmi"&gt;Playing around with WMI
+&lt;/h3&gt;&lt;p&gt;First off I started by randomly tweaking a few values in the source code (&lt;em&gt;sidenote: you probably shouldn&amp;rsquo;t be doing this at the kernel level!&lt;/em&gt;) and briefly got my fans to spin to their maximum speeds but the thermal profiles did not seem to budge, my CPU was still throttled at a respectable 3.2 GHz and I was none the wiser&lt;br&gt;Regardless, this confirmed my assumptions regarding WMI and thus I booted into Windows to monitor WMI activity and sure enough, whenever I changed thermal profiles using the app, a WMI event was registered on the &lt;a class="link" href="https://en.wikipedia.org/wiki/Event_Viewer" target="_blank" rel="noopener"
+&gt;Windows Event Viewer&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The monitor told me that two WMI functions - &lt;code&gt;SetGamingFanBehavior&lt;/code&gt; and &lt;code&gt;SetGamingMiscSetting&lt;/code&gt; were called for changing fan speeds and applying overclocks respectively. Just knowing this alone wasn&amp;rsquo;t enough though, I also needed to know what inputs are fed into these methods so that they actually do something. The event viewer, sadly, provided no means to track inputs.&lt;br&gt;&lt;/p&gt;
+&lt;h3 id="wmi-explorer"&gt;WMI Explorer
+&lt;/h3&gt;&lt;p&gt;Initially, I tried to do some trial and error using a tool I discovered called &lt;a class="link" href="https://github.com/vinaypamnani/wmie2" target="_blank" rel="noopener"
+&gt;WMI Explorer&lt;/a&gt; to manually invoke these functions but it didn&amp;rsquo;t seem to do anything. I later realized that the only way to figure out the required inputs was to reverse engineer the program which calls the function.&lt;/p&gt;
+&lt;p&gt;I also made a small documentation &lt;a class="link" href="https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/diff/Documentation/wmi/driver-development-guide.rst?id=98e45f0d7b99ceac029913ce3a161154a8c4c4a7" target="_blank" rel="noopener"
+&gt;patch&lt;/a&gt; during this time to mention this neat little tool in the WMI driver development &lt;a class="link" href="https://docs.kernel.org/wmi/driver-development-guide.html" target="_blank" rel="noopener"
+&gt;guide&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="reversing-the-nitrosense-app"&gt;Reversing the NitroSense app
+&lt;/h2&gt;&lt;p&gt;Thus it began, my first foray into reverse engineering a real app. The NitroSense app was written in C# and thus I used dotPeek to decompile it.&lt;/p&gt;
+&lt;h3 id="fan-modes-cracked"&gt;Fan Modes Cracked
+&lt;/h3&gt;&lt;p&gt;While searching for the input values for the overclock WMI call, I coincidentally chanced upon the function that was responsible for setting the fan modes —&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-C" data-lang="C"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;set_all_fan_mode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CommonFunction&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Fan_Mode_Type&lt;/span&gt; &lt;span class="n"&gt;mode_index&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;ulong&lt;/span&gt; &lt;span class="n"&gt;intput&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;switch&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mode_index&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;CommonFunction&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Fan_Mode_Type&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nl"&gt;Auto&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;intput&lt;/span&gt; &lt;span class="o"&gt;|=&lt;/span&gt; &lt;span class="mi"&gt;4259840UL&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;CommonFunction&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Fan_Mode_Type&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nl"&gt;Max&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;intput&lt;/span&gt; &lt;span class="o"&gt;|=&lt;/span&gt; &lt;span class="mi"&gt;8519680UL&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;CommonFunction&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Fan_Mode_Type&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nl"&gt;Custom&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;intput&lt;/span&gt; &lt;span class="o"&gt;|=&lt;/span&gt; &lt;span class="mi"&gt;12779520UL&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;WMIFunction&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;SetAcerGamingFanGroupBehavior&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;intput&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;GetAwaiter&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="nf"&gt;GetResult&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;byte&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;MaxValue&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;As we can see, input values of the WMI function are readily available here! There are three magic values which correspond to the three different fan modes. Was a bit surprised to the see the typo in the &amp;lsquo;intput&amp;rsquo; variable, kind of refreshing to know that even billion dollar companies have such mistakes in their code lol.&lt;/p&gt;
+&lt;h3 id="in-search-of-overclocks"&gt;In Search Of Overclocks..
+&lt;/h3&gt;&lt;p&gt;The overclock function was sadly not as simple of an egg to crack. I traced through the GUI code for the app and narrowed it down to this particular function -&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;span class="lnt"&gt;23
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-C" data-lang="C"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;async&lt;/span&gt; &lt;span class="n"&gt;Task&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nf"&gt;set_operation_mode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;Operation_Mode&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;output&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;try&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;NamedPipeClientStream&lt;/span&gt; &lt;span class="n"&gt;cline_stream&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;NamedPipeClientStream&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;.&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;PredatorSense_service_namedpipe&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;PipeDirection&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;InOut&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;cline_stream&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;Connect&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;output&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;await&lt;/span&gt; &lt;span class="n"&gt;Task&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Run&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;Func&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(()&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;IPCMethods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;SendCommandByNamedPipe&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cline_stream&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;uint&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;Operation_Mode&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;cline_stream&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;WaitForPipeDrain&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;byte&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;buffer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;byte&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;cline_stream&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;buffer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;buffer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Length&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;BitConverter&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;ToInt32&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;buffer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;})).&lt;/span&gt;&lt;span class="nf"&gt;ConfigureAwait&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;cline_stream&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;Close&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;output&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nf"&gt;catch&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Exception&lt;/span&gt; &lt;span class="n"&gt;ex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;output&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Don&amp;rsquo;t worry if it all looks like gibberish to you, it did to me as well when I first came across it. Since i was wholly unfamiliar with the Windows API, I asked ChatGPT to explain the code to me like a 5 year old. GPT promptly explained that this function was creating something called a &lt;a class="link" href="https://en.wikipedia.org/wiki/Named_pipe" target="_blank" rel="noopener"
+&gt;&amp;ldquo;Named Pipe&amp;rdquo;&lt;/a&gt; which is used for inter-process communication.&lt;/p&gt;
+&lt;p&gt;Uh oh, this meant that the actual WMI call was was being made by a process on the receiving end of this pipe. Interestingly, I noted that the name of the pipe was &amp;lsquo;PredatorSense_&lt;strong&gt;service&lt;/strong&gt;&amp;rsquo;, suggesting that the recipient process was a service.&lt;/p&gt;
+&lt;p&gt;While we are here, let me also comment that the &lt;code&gt;Operation_Mode&lt;/code&gt; argument of &lt;code&gt;set_operation_mode()&lt;/code&gt; took one of three values: 0, 1 or 4. Which makes sense considering that my lapop has three performance modes.&lt;/p&gt;
+&lt;h3 id="the-final-piece-of-the-puzzle"&gt;The Final Piece Of The Puzzle
+&lt;/h3&gt;&lt;p&gt;Sure enough, there was indeed a service in services.msc named &lt;code&gt;Predator Service&lt;/code&gt;, the service started a program called &lt;code&gt;Pssvc.exe&lt;/code&gt;. This particular program was written in C++, I initially used IDA to disassemble it before realizing that I had pretty much 0 knowledge of assembly ;-;&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s when I remembered Ghidra, a reversing tool developed by the NSA, that I had used during a CTF contest that I had played a long time ago. Ghidra tries its best to produce a readable C-like program from the disassembled code.&lt;/p&gt;
+&lt;p&gt;After some heavy decompiling on the service file using Ghidra I finally found out that the value is read from the named pipe and then used to call a function from a function pointer table as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-C" data-lang="C"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;PTR_LAB_140052c90&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="n"&gt;uVar14&lt;/span&gt;&lt;span class="p"&gt;])(&lt;/span&gt;&lt;span class="n"&gt;puVar5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;puVar8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;local_250&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;local_244&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Here, &lt;code&gt;&amp;amp;PTR_LAB_140052c90&lt;/code&gt; refers to the following function pointer table -&lt;/p&gt;
+&lt;img src="function_table.png" width="480"&gt;
+&lt;p&gt;If you remember from &lt;a class="link" href="#in-search-of-overclocks" &gt;earlier&lt;/a&gt;, a command index of 30 was passed into the named pipe along with the Operation Mode. This index corresponds to the function pointer that I&amp;rsquo;ve highlighted in the image.&lt;/p&gt;
+&lt;p&gt;I still needed to know what the arguments are for this function, here is the relevant section of the code which receives the input from the named pipe and calls this function —&lt;/p&gt;
+&lt;img src="ghidra_decomp.png" width="580"&gt;
+&lt;p&gt;Yes, it&amp;rsquo;s one hell of a monstrosity—but after staring at it for a long time, I figured out that all it does is pass an array of bytes from the named pipe with their corresponding byte offsets to the function. You can observe this in the last line of code which actually performs the function call, &lt;code&gt;puVar5&lt;/code&gt; is the array of bytes and &lt;code&gt;puVar8&lt;/code&gt; are the byte offsets (I think anyways)&lt;/p&gt;
+&lt;h3 id="jackpot"&gt;Jackpot
+&lt;/h3&gt;&lt;p&gt;Finally, we are ready to analyze the function that makes the WMI call —&lt;/p&gt;
+&lt;img src="final_function.png" width="580"&gt;
+&lt;p&gt;This function dereferences the values from the byte array and performs a bitwise operation (&lt;code&gt;value &amp;lt;&amp;lt; 8 | 0xb;&lt;/code&gt;) on them before passing them to the WMI call. Doing this manually on the &lt;code&gt;OperationMode&lt;/code&gt; values from earlier, we get the following values for WMI calls:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-rust" data-lang="rust"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;//SetGamingMiscSetting
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;Performance&lt;/span&gt;: &lt;span class="mi"&gt;1035&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;Default&lt;/span&gt;: &lt;span class="mi"&gt;267&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;Quiet&lt;/span&gt;: &lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;//SetGamingFanBehavior
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;Custom&lt;/span&gt;: &lt;span class="mi"&gt;12779520&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;Auto&lt;/span&gt;: &lt;span class="mi"&gt;4259840&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;Max&lt;/span&gt;: &lt;span class="mi"&gt;8519689&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Using WMI Explorer to call this function with this values does indeed change performance profiles and fan speeds! All of this reversing had finally paid off! Or so I thought..&lt;/p&gt;
+&lt;h2 id="writing-the-patch"&gt;Writing The Patch
+&lt;/h2&gt;&lt;p&gt;After all of that work—reverse engineering the NitroSense app and painstakingly obtaining the correct values, I was ready to write my patch. Which is when I discovered that the kernel module, &lt;a class="link" href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/acer-wmi.c" target="_blank" rel="noopener"
+&gt;acer-wmi&lt;/a&gt;, which adds WMI functionality to Linux for my laptop already had all of the above values defined! 🙃&lt;/p&gt;
+&lt;p&gt;Now this truly threw me for a loop, if someone had already taken the time to reverse these values why weren&amp;rsquo;t they working on my laptop? Initially I thought this was because my turbo button was not producing a WMI event when pressed.&lt;/p&gt;
+&lt;p&gt;I &lt;a class="link" href="https://lore.kernel.org/platform-driver-x86/CALiyAom1xDH6A0Q2WNHCMUcpMJfM3pXO2DaW=bgHGUi8ZOpBbQ@mail.gmail.com/" target="_blank" rel="noopener"
+&gt;reached out&lt;/a&gt; the maintainers on the platform profile subsystem asking for help and they were more than ready to help. In fact, one of them even offered to write the patch for me! However since my main aim was to learn, I politely refused and he was kind enough to guide me in the right direction.&lt;/p&gt;
+&lt;p&gt;From there, I learnt about ACPI tables where these WMI functions are defined and the corresponding &lt;a class="link" href="https://unix.stackexchange.com/questions/534429/how-to-print-the-acpi-table" target="_blank" rel="noopener"
+&gt;tools&lt;/a&gt; used to read them. After scanning through the ACPI code I realized that the Predator and Nitro series of laptops share the same values for the profiles and that the core issue was that the Predator series supports two additional profiles.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;acer_wmi&lt;/code&gt; module had the &lt;code&gt;supported_profiles&lt;/code&gt; value hardcoded for the Predator. However, it should have been set dynamically, since the hardware had another WMI call (&lt;code&gt;GetGamingMiscSetting&lt;/code&gt;) that returns a bitmap indicating the supported performance profiles. This function was simply not being utilised by the current driver.&lt;/p&gt;
+&lt;p&gt;Hence, my &lt;a class="link" href="https://lore.kernel.org/all/20250113-platform_profile-v4-0-23be0dff19f1@gmail.com/" target="_blank" rel="noopener"
+&gt;patchset&lt;/a&gt; essentially involved adding dynamic support for setting the supported platform profiles and some other miscellaneous improvements to the platform profile handling for acer laptops. After these patches got merged, I could finally set my performance profiles from the sysfs &lt;a class="link" href="https://docs.kernel.org/userspace-api/sysfs-platform_profile.html" target="_blank" rel="noopener"
+&gt;interface&lt;/a&gt; at &lt;code&gt;/sys/firmware/acpi/platform_profile&lt;/code&gt;!&lt;/p&gt;
+&lt;p&gt;We weren&amp;rsquo;t done yet though. One last issue I was facing is that on Windows, my CPU was able to reach its max thermal limit of 100°C when operating in performance mode but on Linux, it was throttling at 92°C. I initially tried tweaking CPU frequency scaling drivers and other settings without success. After a lot of trial and error, a maintainer suggested installing &lt;a class="link" href="https://man.archlinux.org/man/extra/thermald/thermald.8.en" target="_blank" rel="noopener"
+&gt;thermald&lt;/a&gt;—and that ended up solving the problem!&lt;/p&gt;
+&lt;h2 id="conclusion"&gt;Conclusion
+&lt;/h2&gt;&lt;p&gt;That just about does it, in this rather wordy blog post I&amp;rsquo;ve written down (almost) my complete approach to adding some unsupported functionality for my hardware to the Linux Kernel. Have to say, while it was certainly frustrating at times, it was a great deal of fun. Rarely do you actually get to go down to the basics like ACPI tables or manually juggle bitmasks to solve problems with your laptop. It&amp;rsquo;s hard to explain but there is a sort of raw simplicity operating at such a low level, everything merely does what its meant to do and it does it well. There&amp;rsquo;s no hidden abstractions or sneaky gotcha&amp;rsquo;s that surprise you.&lt;/p&gt;
+&lt;p&gt;Going through this whole process also made me realize that you can literally solve any problem you have with software, as long as you have the grit to stick with it and see it through.&lt;/p&gt;</description></item><item><title>Linux Kernel Mentorship</title><link>https://hrideshmg.com/p/lfx-mentorship/</link><pubDate>Sat, 08 Mar 2025 00:00:00 +0000</pubDate><guid>https://hrideshmg.com/p/lfx-mentorship/</guid><description>&lt;img src="https://hrideshmg.com/p/lfx-mentorship/cover.png" alt="Featured image of post Linux Kernel Mentorship" /&gt;&lt;p&gt;This blog post has been long overdue but I&amp;rsquo;ve finally gotten around to it! I graduated from the Linux Kernel Bug Fixing Mentorship Programme'25 sometime in late january. I&amp;rsquo;ll be detailing my experience about the same in this blog post.&lt;/p&gt;
+&lt;h2 id="what-is-the-lkmp"&gt;What is the LKMP?
+&lt;/h2&gt;&lt;p&gt;The Linux Kernel Mentorship programme or &lt;a class="link" href="https://wiki.linuxfoundation.org/lkmp" target="_blank" rel="noopener"
+&gt;LKMP&lt;/a&gt; for short is, as written on their website -&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;A structured remote learning opportunity for aspiring Linux Kernel developers&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In specific, the programme that I was part of was the Linux Kernel Bug Fixing Programme but don&amp;rsquo;t let the name fool you, you can do a lot more than just fix bugs, like writing new device drivers or extending existing ones.&lt;/p&gt;
+&lt;p&gt;In short, its an opportunity where beginners to kernel dev can get their feet wet with the Linux Kernel while being supported by experienced mentors. Note that unlike GSoC or traditional &lt;a class="link" href="https://lfx.linuxfoundation.org/tools/mentorship/" target="_blank" rel="noopener"
+&gt;LFX&lt;/a&gt; mentorships, the kernel bug fixing mentorship is an unpaid one but the knowledge you get from the whole process is worth its weight in gold.&lt;/p&gt;
+&lt;p&gt;If, however, you&amp;rsquo;re someone who needs a little more motivation than that then you should probably look elsewhere as you can only ever do one LFX mentorship during your lifetime. Choose wisely :)&lt;/p&gt;
+&lt;h3 id="the-structure-of-the-program"&gt;The structure of the program
+&lt;/h3&gt;&lt;p&gt;I would say that the LKMP is a very flexible program in the sense that there is no roadmap or particular set of tasks that you have to complete in order to graduate. You are free to make any kind of meaningful contribution to the kernel, this opens the door to work on anything that you&amp;rsquo;re truly interested in. This coupled with the fact that you get to attend weekly meetings with experienced kernel developers makes it a very enriching experience.&lt;/p&gt;
+&lt;p&gt;The only requirements for graduation is that you need to have around &lt;strong&gt;5-10 patches&lt;/strong&gt; accepted into the Linux Kernel by the end of the program. This might seem difficult at the start, but trust me, once you get into the flow of things, it becomes a breeze.&lt;/p&gt;
+&lt;h2 id="why-i-decided-to-join-the-programme"&gt;Why I decided to join the programme
+&lt;/h2&gt;&lt;p&gt;There&amp;rsquo;s actually a bit of an interesting backstory behind this, when I first bought my laptop (an Acer Nitro 5) and installed Linux on it ( as one does with a brand new PC, &lt;em&gt;obviously&lt;/em&gt; ) I noticed that no matter what I tried, I just could not get the headphone jack to detect the microphone.&lt;/p&gt;
+&lt;p&gt;This is an issue that I had revisisted multiple times over the course of a year and it had even persisted across distros! This led me to believe that the issue was in the kernel and sure enough, after a bit of research this had been the case.&lt;/p&gt;
+&lt;p&gt;Around this time a few of my &lt;a class="link" href="https://www.amfoss.in" target="_blank" rel="noopener"
+&gt;club&lt;/a&gt; seniors suggested me to try out the LFX mentorship since I wanted to explore low level development and I figured that it was the perfect opportunity to try and fix this tiny (but very annoying!) problem. As Plato once said -&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Necessity is the mother of invention&amp;rdquo;
+&lt;br&gt;&amp;ndash; &lt;cite&gt;Plato&lt;/cite&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="my-contributions"&gt;My contributions
+&lt;/h2&gt;&lt;h3 id="fixing-microphone-input-on-the-alc287-codec"&gt;Fixing microphone input on the ALC287 Codec
+&lt;/h3&gt;&lt;p&gt;After a bit of research, I stumbled upon this excellent blog &lt;a class="link" href="https://asus-linux.org/blog/sound-2021-01-11/" target="_blank" rel="noopener"
+&gt;post&lt;/a&gt; by Luke Jones on his adventure for getting sound to work on Asus ROG notebook. If it were not for this resource, this journey would have been much, much longer.&lt;/p&gt;
+&lt;p&gt;Through his blog I understood a lot of fundamentals regarding how audio is handled for Realtek Codecs on Linux but wait a minute Hridesh, what on earth is a Codec? Let me explain it with the help of an image -&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;img src="https://hrideshmg.com/p/lfx-mentorship/hdaudio.png"
+width="506"
+height="372"
+srcset="https://hrideshmg.com/p/lfx-mentorship/hdaudio_hu_f82051d15dfc25c1.png 480w, https://hrideshmg.com/p/lfx-mentorship/hdaudio_hu_a807b8e0170cbc08.png 1024w"
+loading="lazy"
+alt="Audio Architecture"
+class="gallery-image"
+data-flex-grow="136"
+data-flex-basis="326px"
+&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;As you can see the &lt;strong&gt;Codec&lt;/strong&gt; is a hardware chip on the motherboard which is responsible for controlling the speakers and microphone on the system. The kernel interacts with this chip using the I2C interface, but we don&amp;rsquo;t need to go that deep to fix our issue.&lt;/p&gt;
+&lt;p&gt;The problem that occurs here is that this codec expects the software to interact with it in a certain manner. However, Realtek, in all their glory, often ship these chips with non-standard configurations, meaning they don&amp;rsquo;t always properly report their capabilities to the operating system. Instead, they rely on driver-specific &lt;strong&gt;quirks&lt;/strong&gt; to function correctly.&lt;/p&gt;
+&lt;p&gt;The issue is that these quirks are only implemented in the Windows driver, leaving Linux users to manually patch or configure the kernel to get everything working. The result of this? A giant file in the kernel tree named &lt;a class="link" href="https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/pci/hda/patch_realtek.c?h=v6.14" target="_blank" rel="noopener"
+&gt;patch_realtek.c&lt;/a&gt; which has (at the time of writing) over 13,000 lines of patches for various different codecs.&lt;/p&gt;
+&lt;p&gt;After digging a bit deeper into it and experimenting a bit, I finally got it to work after reverse engineering the windows driver and figuring out which quirk was missing! This was my reaction after finally see the mic input meter start moving -&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExd3Y5djB6djhxbnl3am4zY29kanF5OGh4azFpbm1wbXdtMnRsYTRiOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/S9i8jJxTvAKVHVMvvW/giphy.gif"
+loading="lazy"
+alt="happy"
+&gt;&lt;/p&gt;
+&lt;p&gt;Apparently, the quirk that I had found out was already defined in the &lt;code&gt;patch_realtek&lt;/code&gt; file, so all I had to do was map it to my codec. I quickly made a &lt;a class="link" href="https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=5a69e3d0a1b0f07e58c353560cfcb1ea20a6f040" target="_blank" rel="noopener"
+&gt;patch&lt;/a&gt; and submitted it and it finally got released in v6.13 of the kernel. This means that everyone who has my laptop or uses the same audio codec can finally enjoy working microphone input.&lt;/p&gt;
+&lt;h3 id="enabling-turbo-support-on-my-laptop"&gt;Enabling Turbo support on my laptop
+&lt;/h3&gt;&lt;p&gt;The second contribution is the one I spent the most amount of time on and it&amp;rsquo;s where I realized how awesome the kernel community really is. My laptop is a gaming laptop and gaming laptops often have this feature where you can activate certain &lt;strong&gt;profiles&lt;/strong&gt; like &amp;ldquo;performance&amp;rdquo; or &amp;ldquo;quiet&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;These profiles enable you to extract more power from your machine by overclocking the CPU/GPU or tell it to slow down the fans so that it runs more quietly. However, these profiles are only accessible on Windows through the dedicated vendor app.&lt;/p&gt;
+&lt;p&gt;I was initially skeptical as to whether it was even possible to bring this support to Linux, which prompted me to send an email to the kernel mailing list asking for help. The developers there were extremely supportive and they even offered to write the patch for me! However, since I wanted to learn and tinker with it, I endeavoured to try and implement it myself.&lt;/p&gt;
+&lt;p&gt;Through the process, I learnt about a variety of different things like ACPI tables, WMI calls, sysfs interfaces, and even did some indepth reverse-engineering using Ghidra and dotPeek to find out how the Windows app worked underneath the hood. &lt;del&gt;A full technical write up on this would warrant another blog post, so keep an eye out for that&lt;/del&gt; The &lt;a class="link" href="https://hrideshmg.com/p/reversing-turbo/" &gt;blog post&lt;/a&gt; for it is now out :)&lt;/p&gt;
+&lt;h2 id="my-experience"&gt;My experience
+&lt;/h2&gt;&lt;p&gt;The LKMP has been one of the most impactful programs that I&amp;rsquo;ve participated in. You might find this surprising, but the majority of kernel developers aren&amp;rsquo;t actually paid for their work, they do everything voluntarily and their enthusiasm is nothing short of infectious.&lt;/p&gt;
+&lt;p&gt;Taking part in this whole process really taught me a lot, the kernel community has very high standards when it comes to code quality. I&amp;rsquo;ve had maintainers painstakingly take apart each line in my patch to suggest improvements and question logic but don&amp;rsquo;t be scared of this! In fact, this level of scrutiny is what makes the kernel so robust. Every comment from a maintainer is an opportunity to learn, not just about kernel code but about writing efficient, clean and maintainable code.&lt;/p&gt;
+&lt;p&gt;I feel like the way I approach code has fundamentally changed after taking part in the LKMP. For starters, I&amp;rsquo;ve become much more conscious of the changes that I make and running &lt;code&gt;git diff&lt;/code&gt; to verify my logic before every commit has pretty much become second nature to me.&lt;/p&gt;
+&lt;p&gt;Debugging issues in a codebase as large and complex as the Linux Kernel has also given me the confidence that if I put my mind to it, I can tackle any problem, no matter how large it may seem. It wouldn&amp;rsquo;t be an exaggeration to say that I&amp;rsquo;ve improved significantly as a developer after completing the programme.&lt;/p&gt;
+&lt;h2 id="conclusion"&gt;Conclusion
+&lt;/h2&gt;&lt;p&gt;I think I&amp;rsquo;ll just end this post by saying that if you&amp;rsquo;ve been meaning to explore kernel development or just become a better developer overall, the LKMP is a fantastic opportunity. The learning curve might be a bit steep, but as they say - &amp;ldquo;Its the hard things in life that are worth doing.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Here is a link where you can check out all of my contributions to the kernel: &lt;a class="link" href="https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/?qt=author&amp;amp;q=hridesh" target="_blank" rel="noopener"
+&gt;https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/?qt=author&amp;q=hridesh&lt;/a&gt;&lt;/p&gt;</description></item></channel></rss>
