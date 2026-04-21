@@ -5,8 +5,8 @@ description: A few links you might find interesting.
 links:
   - title: Resume
     description: My journey so far
-    website: https://hrideshmg.com/resume/
-    image: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+    website: https://hrideshmg.com/resume
+    image: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/.pdf_OneDrive_icon.svg/960px-.pdf_OneDrive_icon.svg.png
   - title: GitHub
     description: Checkout a few of my projects
     website: https://github.com/hrideshmg
