@@ -3,6 +3,10 @@ title: Links
 readingTime: false
 description: A few links you might find interesting.
 links:
+  - title: Resume
+    description: My journey so far
+    website: https://hrideshmg.com/resume/
+    image: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
   - title: GitHub
     description: Checkout a few of my projects
     website: https://github.com/hrideshmg
