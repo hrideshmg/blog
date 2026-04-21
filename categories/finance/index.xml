@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Finance on Hridesh MG</title><link>https://hrideshmg.com/categories/finance/</link><description>Recent content in Finance on Hridesh MG</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://hrideshmg.com/categories/finance/index.xml" rel="self" type="application/rss+xml"/><item><title>What Are Smart-Beta Funds, and Do They Work in India?</title><link>https://hrideshmg.com/p/smart-beta/</link><pubDate>Thu, 08 Jan 2026 00:00:00 +0000</pubDate><guid>https://hrideshmg.com/p/smart-beta/</guid><description>&lt;img src="https://hrideshmg.com/p/smart-beta/cover.jpg" alt="Featured image of post What Are Smart-Beta Funds, and Do They Work in India?" /&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; Do not take anything written in this blog as investment advice, please do your own research before making any financial decisions.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;A few months ago, when I started getting into finance, &lt;a class="link" href="https://zerodha.com/varsity/" target="_blank" rel="noopener"
+&gt;Zerodha Varsity&lt;/a&gt; was my go-to resource. I owe much of my finance/stock-market knowledge to the excellent modules over there.&lt;/p&gt;
+&lt;p&gt;While I reading through the mutual fund module, one article in particular stood out to me - &lt;a class="link" href="https://zerodha.com/varsity/chapter/smart-beta-funds/" target="_blank" rel="noopener"
+&gt;&amp;ldquo;Smart-Beta Funds&amp;rdquo;&lt;/a&gt;. What surprised me wasn&amp;rsquo;t the concept itself, but how little discussion it had compared to other varsity articles. While most modules had hundreds if not thousands of comments, this one had a meagre 25-30.&lt;/p&gt;
+&lt;p&gt;This lack of attention felt odd, and as someone who likes to dig into things that fly under the radar I decided to look deeper into them. This blog is an attempt to summarize my learnings and present some of the analysis I&amp;rsquo;ve done on these funds. I&amp;rsquo;ll try my best to keep it as beginner friendly as possible so don&amp;rsquo;t worry if you don&amp;rsquo;t know anything about these funds.&lt;/p&gt;
+&lt;h2 id="index-funds"&gt;Index Funds
+&lt;/h2&gt;&lt;p&gt;One of the best ways to understand something is to draw parallels to an already known concept, which is why I&amp;rsquo;ll compare Smart-Beta funds to &lt;a class="link" href="https://zerodha.com/varsity/chapter/introduction-to-index-funds/" target="_blank" rel="noopener"
+&gt;Index Funds&lt;/a&gt;. An index fund is simply a fund which tracks a certain index like the Nifty 50 or the Sensex, what this means is that if your entire portfolio was composed of a single index fund, it would move almost exactly like the index that it is tracking.&lt;/p&gt;
+&lt;h3 id="index-funds-vs-mutual-funds"&gt;Index Funds vs Mutual Funds
+&lt;/h3&gt;&lt;p&gt;Here is something that may surprise a lot of you: Index funds outperform the majority of actively managed funds over the long term. This is almost a universal consensus among most finance-savvy investors. One of the primary causes for this being lower expense ratios that compound over time.&lt;/p&gt;
+&lt;p&gt;Don&amp;rsquo;t just take my word for it though, investing legend Warren Buffet once remarked —&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;If a statue is ever erected to honor the person who has done the most for American investors, the handsdown choice should be Jack Bogle.&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Jack Bogle being, of course, the inventor of the world’s first index fund (the Vanguard 500 Index Fund). &lt;br&gt;If you&amp;rsquo;re someone who is more data inclined, feel free to take a look at the &lt;a class="link" href="https://web.archive.org/web/20251009172652/https://www.spglobal.com/spdji/en/documents/spiva/spiva-india-scorecard-mid-year-2025.pdf" target="_blank" rel="noopener"
+&gt;SPIVA India&lt;/a&gt; reports published by S&amp;amp;P global, which compares the performance of active and passive (index) funds. The 3 and 5-year horizons are of particular interest as 80-90% of active funds see underperformance compared to passive ones.&lt;/p&gt;
+&lt;p&gt;Index funds represent the purest form of passive investing, but they don&amp;rsquo;t represent the totality of the spectrum. What if there was a way to tweak certain characteristics of the index? That is where the magic of Smart-Beta funds come into play.&lt;/p&gt;
+&lt;h2 id="what-is-a-smart-beta-fund"&gt;What is a &amp;ldquo;Smart&amp;rdquo;-beta fund?
+&lt;/h2&gt;&lt;p&gt;Contrary to its name, &amp;ldquo;Smart&amp;rdquo; beta funds aren&amp;rsquo;t actually all that smart, it&amp;rsquo;s more of a marketing term if anything. This style of investing is more commonly referred to as &lt;a class="link" href="https://en.wikipedia.org/wiki/Factor_investing" target="_blank" rel="noopener"
+&gt;&lt;strong&gt;factor investing&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Factor based funds sit between active and passive funds. They still have low expense ratios and a pre-defined formula, but unlike index funds, they do not weight stocks by market cap alone. The funds are weighted by certain characteristics called &amp;ldquo;factors&amp;rdquo;, few examples of factors are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Momentum (recent winners)&lt;/li&gt;
+&lt;li&gt;Value (cheap stocks)&lt;/li&gt;
+&lt;li&gt;Quality (strong balance sheets)&lt;/li&gt;
+&lt;li&gt;Low Volatility (consistent share price)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To take momentum as an example, a momentum-factor based fund (like the &lt;a class="link" href="https://web.archive.org/web/20251207192845/https://niftyindices.com/indices/equity/strategy-indices/nifty-midcap150-momentum-50" target="_blank" rel="noopener"
+&gt;Nifty Midcap150 Momentum 50&lt;/a&gt;) would pick stocks which show the largest recent returns in a specific time period. These funds are usually rebalanced every 6 months or so.&lt;/p&gt;
+&lt;p&gt;Smart-Beta funds are passive at their core, but they put a spin on the traditional index fund by using specific formulas to decide which stocks become part of the fund.&lt;/p&gt;
+&lt;h3 id="do-smart-beta-funds-work"&gt;Do Smart-Beta funds Work?
+&lt;/h3&gt;&lt;p&gt;This is probably the question that all of you are most interested in. While I was doing my research into these funds, I came across this &lt;a class="link" href="https://web.archive.org/web/20230806213346/https://www.spglobal.com/spdji/en/documents/education/education-blending-factors-in-your-smart-beta-portfolio.pdf" target="_blank" rel="noopener"
+&gt;research article&lt;/a&gt; from S&amp;amp;P global which conducted a data analysis on single-factor funds in the US market.&lt;/p&gt;
+&lt;p&gt;What they found was that single-factor indices often outperform traditional index funds over the long term. However, they are subject to distinct cycles of underperformance. The article recommends blending different seemingly inversely related factors together to create a more stable source of returns.&lt;/p&gt;
+&lt;p&gt;However, keep in mind that all of this analysis was done on U.S. markets. I could find no such detailed research conducted on the Indian markets (please do comment down below if you find any)&lt;/p&gt;
+&lt;p&gt;So, naturally, I did what any bored computer science student with too much time on their hands would do — I wrote some code to analyze the historical performance myself :)&lt;/p&gt;
+&lt;h2 id="digging-into-the-data"&gt;Digging Into The Data
+&lt;/h2&gt;&lt;p&gt;Now, fair warning! I&amp;rsquo;m not a data scientist or a research analyst. So there may be some errors that have crept in due to my inexperience. If you wish to proofread it, the colab notebook and raw price data used for generating the below insights is open-source and available &lt;a class="link" href="https://github.com/hrideshmg/smart-beta-analysis" target="_blank" rel="noopener"
+&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;One important thing to remember is that &lt;strong&gt;past performance are not indicative of future returns&lt;/strong&gt;. That said, I still do think that historical data is a useful tool, this article wouldn&amp;rsquo;t exist otherwise ;)&lt;/p&gt;
+&lt;h3 id="source"&gt;Source
+&lt;/h3&gt;&lt;p&gt;The stock market data for the different indices was obtained from NSE&amp;rsquo;s website. I&amp;rsquo;ve used the past 10 years stock data from &lt;code&gt;01-01-2015&lt;/code&gt; to &lt;code&gt;25-04-2025&lt;/code&gt;. The choice of 10 years was, to be honest, completely arbitrary, it just felt like a good enough sample space when I did this analysis.&lt;/p&gt;
+&lt;p&gt;I had randomly chosen the following few indices for comparison:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Nifty 50 (Benchmark)&lt;/li&gt;
+&lt;li&gt;Gold (Benchmark)&lt;/li&gt;
+&lt;li&gt;Nifty Midcap 150 (Benchmark)&lt;/li&gt;
+&lt;li&gt;Nifty Alpha 50&lt;/li&gt;
+&lt;li&gt;Nifty 50 Low Volatility&lt;/li&gt;
+&lt;li&gt;Nifty Midcap 150 Quality&lt;/li&gt;
+&lt;li&gt;Nifty Midcap 150 Momentum&lt;/li&gt;
+&lt;li&gt;Nifty 200 Momentum&lt;/li&gt;
+&lt;li&gt;Nifty 200 Quality&lt;/li&gt;
+&lt;li&gt;Nifty 200 Value&lt;/li&gt;
+&lt;li&gt;Nifty 200 Alpha&lt;/li&gt;
+&lt;li&gt;Nifty Smallcap 250 Quality&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you&amp;rsquo;re annoyed by the lack of diversity in same-sized factor indices (like the absence of a Nifty 150 Value), you&amp;rsquo;re not alone. NSE doesn’t recognize these as official indices, so they simply don’t exist. As for why they don&amp;rsquo;t exist, your guess is as good as mine.&lt;/p&gt;
+&lt;h3 id="methodology"&gt;Methodology
+&lt;/h3&gt;&lt;p&gt;I&amp;rsquo;ve chosen to compare the indices based on the following few metrics:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CAGR:&lt;/strong&gt; Average yearly growth rate of the index.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Rolling Returns:&lt;/strong&gt; Overlapping returns calculated over 1-year, 3-year and 5-year periods.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Sharpe Ratio:&lt;/strong&gt; Volatility adjusted returns.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Max Drawdown:&lt;/strong&gt; Largest percentage drop from a peak to a trough in 10 years.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Annual Volatility:&lt;/strong&gt; How much the index tends to fluctuate in a year.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In addition to the above, I&amp;rsquo;ve also measured how &amp;ldquo;in-sync&amp;rdquo; these indices move with respect to each other through a correlation matrix. I got inspiration to do this from the S&amp;amp;P report, which found that in U.S. markets certain indices are inversely correlated, meaning that combining them could yield better stability.&lt;/p&gt;
+&lt;p&gt;Of all these metrics, the two most important ones are the Sharpe ratio and &lt;a class="link" href="https://zerodha.com/varsity/chapter/rolling-returns/" target="_blank" rel="noopener"
+&gt;rolling returns&lt;/a&gt;.&lt;/p&gt;
+&lt;h4 id="sharpe-whats-that"&gt;Sharpe? What&amp;rsquo;s that?
+&lt;/h4&gt;&lt;p&gt;If you&amp;rsquo;re a seasoned investor, you&amp;rsquo;ve probably seen most of the metrics that I have listed above — except maybe the &lt;strong&gt;Sharpe ratio&lt;/strong&gt;. Though its more commonly used by quant traders, I believe that its an effective way to compare returns while accounting for risk.&lt;/p&gt;
+&lt;p&gt;The Sharpe ratio, simply put tells you how much extra return an investment delivers for the risk you take to get it. A higher ratio is better (more return for each unit of risk).&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re interested in more details, I&amp;rsquo;d recommend checking out this excellent video:
+&lt;div class="video-wrapper"&gt;
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/9HD6xo2iO1g"
+allowfullscreen
+title="YouTube Video"
+&gt;
+&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;h2 id="results"&gt;Results
+&lt;/h2&gt;&lt;h3 id="key-metrics"&gt;Key Metrics
+&lt;/h3&gt;&lt;p&gt;The table below compares the key metrics I mentioned earlier across the benchmark and smart-beta indices over the past 10 years. It is sorted according the Sharpe ratio.&lt;/p&gt;
+&lt;div class="table-scroll"&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Index&lt;/th&gt;
+&lt;th&gt;CAGR (%)&lt;/th&gt;
+&lt;th&gt;Max Drawdown (%)&lt;/th&gt;
+&lt;th&gt;Annual Volatility (%)&lt;/th&gt;
+&lt;th&gt;Sharpe Ratio&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150 Momentum&lt;/td&gt;&lt;td&gt;0.20&lt;/td&gt;&lt;td&gt;-39.61&lt;/td&gt;&lt;td&gt;0.19&lt;/td&gt;&lt;td&gt;1.02&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150&lt;/td&gt;&lt;td&gt;0.11&lt;/td&gt;&lt;td&gt;-38.67&lt;/td&gt;&lt;td&gt;0.19&lt;/td&gt;&lt;td&gt;0.97&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 50 Low Volatility&lt;/td&gt;&lt;td&gt;0.12&lt;/td&gt;&lt;td&gt;-29.33&lt;/td&gt;&lt;td&gt;0.14&lt;/td&gt;&lt;td&gt;0.91&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Alpha&lt;/td&gt;&lt;td&gt;0.18&lt;/td&gt;&lt;td&gt;-37.50&lt;/td&gt;&lt;td&gt;0.21&lt;/td&gt;&lt;td&gt;0.84&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Smallcap 250 Quality&lt;/td&gt;&lt;td&gt;0.15&lt;/td&gt;&lt;td&gt;-51.91&lt;/td&gt;&lt;td&gt;0.19&lt;/td&gt;&lt;td&gt;0.81&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Momentum&lt;/td&gt;&lt;td&gt;0.16&lt;/td&gt;&lt;td&gt;-34.21&lt;/td&gt;&lt;td&gt;0.20&lt;/td&gt;&lt;td&gt;0.80&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150 Quality&lt;/td&gt;&lt;td&gt;0.12&lt;/td&gt;&lt;td&gt;-36.26&lt;/td&gt;&lt;td&gt;0.16&lt;/td&gt;&lt;td&gt;0.79&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Alpha 50&lt;/td&gt;&lt;td&gt;0.17&lt;/td&gt;&lt;td&gt;-40.67&lt;/td&gt;&lt;td&gt;0.22&lt;/td&gt;&lt;td&gt;0.78&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Quality&lt;/td&gt;&lt;td&gt;0.10&lt;/td&gt;&lt;td&gt;-29.51&lt;/td&gt;&lt;td&gt;0.15&lt;/td&gt;&lt;td&gt;0.70&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Gold&lt;/td&gt;&lt;td&gt;0.09&lt;/td&gt;&lt;td&gt;-22.00&lt;/td&gt;&lt;td&gt;0.14&lt;/td&gt;&lt;td&gt;0.67&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 50&lt;/td&gt;&lt;td&gt;0.10&lt;/td&gt;&lt;td&gt;-38.44&lt;/td&gt;&lt;td&gt;0.17&lt;/td&gt;&lt;td&gt;0.63&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Value&lt;/td&gt;&lt;td&gt;0.10&lt;/td&gt;&lt;td&gt;-60.74&lt;/td&gt;&lt;td&gt;0.23&lt;/td&gt;&lt;td&gt;0.46&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;h3 id="rolling-returns"&gt;Rolling Returns
+&lt;/h3&gt;&lt;p&gt;Relying too heavily on 10-year metrics can be misleading. In practice, investors rarely think in such long, fixed timeframes. What matters far more are the returns one can reasonably expect over shorter horizons, such as 1-year, 3-year, or 5-year periods.&lt;/p&gt;
+&lt;p&gt;This is precisely what &lt;a class="link" href="https://zerodha.com/varsity/chapter/rolling-returns/" target="_blank" rel="noopener"
+&gt;rolling returns&lt;/a&gt; helps us to calculate:&lt;/p&gt;
+&lt;h4 id="1-year"&gt;1-Year
+&lt;/h4&gt;&lt;div class="table-scroll"&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Index&lt;/th&gt;
+&lt;th&gt;Median (%)&lt;/th&gt;
+&lt;th&gt;Max (%)&lt;/th&gt;
+&lt;th&gt;Min (%)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150&lt;/td&gt;&lt;td&gt;24.80&lt;/td&gt;&lt;td&gt;111.92&lt;/td&gt;&lt;td&gt;-34.44&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150 Momentum&lt;/td&gt;&lt;td&gt;20.33&lt;/td&gt;&lt;td&gt;117.42&lt;/td&gt;&lt;td&gt;-25.76&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Alpha 50&lt;/td&gt;&lt;td&gt;17.82&lt;/td&gt;&lt;td&gt;155.47&lt;/td&gt;&lt;td&gt;-29.71&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Smallcap 250 Quality&lt;/td&gt;&lt;td&gt;17.38&lt;/td&gt;&lt;td&gt;126.86&lt;/td&gt;&lt;td&gt;-40.91&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Alpha&lt;/td&gt;&lt;td&gt;16.89&lt;/td&gt;&lt;td&gt;94.24&lt;/td&gt;&lt;td&gt;-28.06&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Momentum&lt;/td&gt;&lt;td&gt;16.26&lt;/td&gt;&lt;td&gt;83.07&lt;/td&gt;&lt;td&gt;-26.50&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Value&lt;/td&gt;&lt;td&gt;15.33&lt;/td&gt;&lt;td&gt;122.79&lt;/td&gt;&lt;td&gt;-49.22&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150 Quality&lt;/td&gt;&lt;td&gt;14.49&lt;/td&gt;&lt;td&gt;95.27&lt;/td&gt;&lt;td&gt;-29.52&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 50 Low Volatility&lt;/td&gt;&lt;td&gt;11.86&lt;/td&gt;&lt;td&gt;73.76&lt;/td&gt;&lt;td&gt;-22.34&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 50&lt;/td&gt;&lt;td&gt;11.79&lt;/td&gt;&lt;td&gt;94.67&lt;/td&gt;&lt;td&gt;-33.40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Quality&lt;/td&gt;&lt;td&gt;10.19&lt;/td&gt;&lt;td&gt;72.80&lt;/td&gt;&lt;td&gt;-26.04&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Gold&lt;/td&gt;&lt;td&gt;6.91&lt;/td&gt;&lt;td&gt;46.57&lt;/td&gt;&lt;td&gt;-16.30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;img src="year1.png"&gt;
+&lt;h4 id="3-year"&gt;3-Year
+&lt;/h4&gt;&lt;div class="table-scroll"&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Index&lt;/th&gt;
+&lt;th&gt;Median (%)&lt;/th&gt;
+&lt;th&gt;Max (%)&lt;/th&gt;
+&lt;th&gt;Min (%)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150&lt;/td&gt;&lt;td&gt;26.15&lt;/td&gt;&lt;td&gt;39.89&lt;/td&gt;&lt;td&gt;13.87&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150 Momentum&lt;/td&gt;&lt;td&gt;22.23&lt;/td&gt;&lt;td&gt;44.36&lt;/td&gt;&lt;td&gt;-3.11&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Alpha 50&lt;/td&gt;&lt;td&gt;20.81&lt;/td&gt;&lt;td&gt;46.82&lt;/td&gt;&lt;td&gt;-4.85&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Alpha&lt;/td&gt;&lt;td&gt;19.58&lt;/td&gt;&lt;td&gt;34.96&lt;/td&gt;&lt;td&gt;-2.37&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Momentum&lt;/td&gt;&lt;td&gt;19.02&lt;/td&gt;&lt;td&gt;31.10&lt;/td&gt;&lt;td&gt;0.11&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Smallcap 250 Quality&lt;/td&gt;&lt;td&gt;18.47&lt;/td&gt;&lt;td&gt;46.97&lt;/td&gt;&lt;td&gt;-14.18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150 Quality&lt;/td&gt;&lt;td&gt;15.17&lt;/td&gt;&lt;td&gt;28.59&lt;/td&gt;&lt;td&gt;-3.40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 50 Low Volatility&lt;/td&gt;&lt;td&gt;13.51&lt;/td&gt;&lt;td&gt;25.71&lt;/td&gt;&lt;td&gt;-2.51&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 50&lt;/td&gt;&lt;td&gt;13.16&lt;/td&gt;&lt;td&gt;31.64&lt;/td&gt;&lt;td&gt;-5.25&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Quality&lt;/td&gt;&lt;td&gt;12.47&lt;/td&gt;&lt;td&gt;25.03&lt;/td&gt;&lt;td&gt;-1.40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Value&lt;/td&gt;&lt;td&gt;9.90&lt;/td&gt;&lt;td&gt;47.50&lt;/td&gt;&lt;td&gt;-22.32&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Gold&lt;/td&gt;&lt;td&gt;7.22&lt;/td&gt;&lt;td&gt;20.28&lt;/td&gt;&lt;td&gt;-2.53&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;img src="year3.png"&gt;
+&lt;h4 id="5-year"&gt;5-Year
+&lt;/h4&gt;&lt;div class="table-scroll"&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Index&lt;/th&gt;
+&lt;th&gt;Median (%)&lt;/th&gt;
+&lt;th&gt;Max (%)&lt;/th&gt;
+&lt;th&gt;Min (%)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150&lt;/td&gt;&lt;td&gt;26.85&lt;/td&gt;&lt;td&gt;36.90&lt;/td&gt;&lt;td&gt;21.45&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Alpha 50&lt;/td&gt;&lt;td&gt;22.74&lt;/td&gt;&lt;td&gt;39.54&lt;/td&gt;&lt;td&gt;0.54&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150 Momentum&lt;/td&gt;&lt;td&gt;21.48&lt;/td&gt;&lt;td&gt;39.99&lt;/td&gt;&lt;td&gt;3.87&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Alpha&lt;/td&gt;&lt;td&gt;18.83&lt;/td&gt;&lt;td&gt;33.76&lt;/td&gt;&lt;td&gt;4.83&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Momentum&lt;/td&gt;&lt;td&gt;18.21&lt;/td&gt;&lt;td&gt;29.99&lt;/td&gt;&lt;td&gt;5.38&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Smallcap 250 Quality&lt;/td&gt;&lt;td&gt;15.74&lt;/td&gt;&lt;td&gt;37.87&lt;/td&gt;&lt;td&gt;-3.01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150 Quality&lt;/td&gt;&lt;td&gt;14.75&lt;/td&gt;&lt;td&gt;24.11&lt;/td&gt;&lt;td&gt;1.78&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 50&lt;/td&gt;&lt;td&gt;13.25&lt;/td&gt;&lt;td&gt;24.57&lt;/td&gt;&lt;td&gt;-2.79&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 50 Low Volatility&lt;/td&gt;&lt;td&gt;13.12&lt;/td&gt;&lt;td&gt;24.09&lt;/td&gt;&lt;td&gt;1.43&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Quality&lt;/td&gt;&lt;td&gt;13.11&lt;/td&gt;&lt;td&gt;21.08&lt;/td&gt;&lt;td&gt;-0.48&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Gold&lt;/td&gt;&lt;td&gt;8.49&lt;/td&gt;&lt;td&gt;14.92&lt;/td&gt;&lt;td&gt;3.19&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Value&lt;/td&gt;&lt;td&gt;6.98&lt;/td&gt;&lt;td&gt;43.25&lt;/td&gt;&lt;td&gt;-12.51&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;img src="year5.png"&gt;
+&lt;h3 id="correlation-matrix"&gt;Correlation Matrix
+&lt;/h3&gt;&lt;div class="table-scroll"&gt;
+&lt;style&gt;
+.table-scroll {
+overflow-x: auto;
+-webkit-overflow-scrolling: touch;
+margin: 1em 0;
+}
+.correlation-matrix {
+font-size: 0.85em;
+background-color: #1a1a1a;
+color: #e0e0e0;
+min-width: 600px;
+}
+.correlation-matrix th {
+background-color: #2a2a2a;
+font-weight: 600;
+text-align: center;
+padding: 8px 4px;
+font-size: 0.75em;
+border: 1px solid #3a3a3a;
+white-space: nowrap;
+}
+.correlation-matrix td {
+text-align: center;
+padding: 6px 4px;
+border: 1px solid #3a3a3a;
+white-space: nowrap;
+}
+.correlation-matrix tbody tr td:first-child {
+font-weight: 600;
+text-align: left;
+background-color: #2a2a2a;
+position: sticky;
+left: 0;
+z-index: 1;
+}
+.corr-high { background-color: #1a3a2a; color: #90ee90; }
+.corr-med { background-color: #3a3a1a; color: #ffd700; }
+.corr-low { background-color: #3a1a1a; color: #ff6b6b; }
+.corr-diag { background-color: #2a2a2a; font-weight: 600; color: #b0b0b0; }
+&lt;/style&gt;
+&lt;table class="correlation-matrix"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;Nifty 50&lt;/th&gt;
+&lt;th&gt;Alpha 50&lt;/th&gt;
+&lt;th&gt;Low Vol&lt;/th&gt;
+&lt;th&gt;MC150 Qual&lt;/th&gt;
+&lt;th&gt;MC150 Mom&lt;/th&gt;
+&lt;th&gt;200 Mom&lt;/th&gt;
+&lt;th&gt;200 Qual&lt;/th&gt;
+&lt;th&gt;200 Val&lt;/th&gt;
+&lt;th&gt;200 Alpha&lt;/th&gt;
+&lt;th&gt;SC250 Qual&lt;/th&gt;
+&lt;th&gt;MC 150&lt;/th&gt;
+&lt;th&gt;Gold&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 50&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;&lt;td class="corr-med"&gt;0.78&lt;/td&gt;&lt;td class="corr-high"&gt;0.90&lt;/td&gt;&lt;td class="corr-med"&gt;0.82&lt;/td&gt;&lt;td class="corr-med"&gt;0.80&lt;/td&gt;&lt;td class="corr-high"&gt;0.86&lt;/td&gt;&lt;td class="corr-high"&gt;0.86&lt;/td&gt;&lt;td class="corr-med"&gt;0.79&lt;/td&gt;&lt;td class="corr-high"&gt;0.83&lt;/td&gt;&lt;td class="corr-med"&gt;0.75&lt;/td&gt;&lt;td class="corr-high"&gt;0.84&lt;/td&gt;&lt;td class="corr-low"&gt;0.04&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Alpha 50&lt;/td&gt;&lt;td class="corr-med"&gt;0.78&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;&lt;td class="corr-med"&gt;0.81&lt;/td&gt;&lt;td class="corr-high"&gt;0.88&lt;/td&gt;&lt;td class="corr-high"&gt;0.94&lt;/td&gt;&lt;td class="corr-high"&gt;0.90&lt;/td&gt;&lt;td class="corr-med"&gt;0.78&lt;/td&gt;&lt;td class="corr-med"&gt;0.81&lt;/td&gt;&lt;td class="corr-high"&gt;0.93&lt;/td&gt;&lt;td class="corr-high"&gt;0.88&lt;/td&gt;&lt;td class="corr-high"&gt;0.93&lt;/td&gt;&lt;td class="corr-low"&gt;0.06&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 50 Low Vol&lt;/td&gt;&lt;td class="corr-high"&gt;0.90&lt;/td&gt;&lt;td class="corr-med"&gt;0.81&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;&lt;td class="corr-high"&gt;0.88&lt;/td&gt;&lt;td class="corr-high"&gt;0.84&lt;/td&gt;&lt;td class="corr-high"&gt;0.87&lt;/td&gt;&lt;td class="corr-high"&gt;0.94&lt;/td&gt;&lt;td class="corr-med"&gt;0.78&lt;/td&gt;&lt;td class="corr-high"&gt;0.85&lt;/td&gt;&lt;td class="corr-med"&gt;0.79&lt;/td&gt;&lt;td class="corr-high"&gt;0.88&lt;/td&gt;&lt;td class="corr-low"&gt;0.05&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty MC150 Quality&lt;/td&gt;&lt;td class="corr-med"&gt;0.82&lt;/td&gt;&lt;td class="corr-high"&gt;0.88&lt;/td&gt;&lt;td class="corr-high"&gt;0.88&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;&lt;td class="corr-high"&gt;0.92&lt;/td&gt;&lt;td class="corr-high"&gt;0.86&lt;/td&gt;&lt;td class="corr-high"&gt;0.86&lt;/td&gt;&lt;td class="corr-med"&gt;0.79&lt;/td&gt;&lt;td class="corr-high"&gt;0.88&lt;/td&gt;&lt;td class="corr-high"&gt;0.89&lt;/td&gt;&lt;td class="corr-high"&gt;0.95&lt;/td&gt;&lt;td class="corr-low"&gt;0.05&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty MC150 Momentum&lt;/td&gt;&lt;td class="corr-med"&gt;0.80&lt;/td&gt;&lt;td class="corr-high"&gt;0.94&lt;/td&gt;&lt;td class="corr-high"&gt;0.84&lt;/td&gt;&lt;td class="corr-high"&gt;0.92&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;&lt;td class="corr-high"&gt;0.92&lt;/td&gt;&lt;td class="corr-med"&gt;0.81&lt;/td&gt;&lt;td class="corr-med"&gt;0.81&lt;/td&gt;&lt;td class="corr-high"&gt;0.93&lt;/td&gt;&lt;td class="corr-high"&gt;0.87&lt;/td&gt;&lt;td class="corr-high"&gt;0.96&lt;/td&gt;&lt;td class="corr-low"&gt;0.07&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Momentum&lt;/td&gt;&lt;td class="corr-high"&gt;0.86&lt;/td&gt;&lt;td class="corr-high"&gt;0.90&lt;/td&gt;&lt;td class="corr-high"&gt;0.87&lt;/td&gt;&lt;td class="corr-high"&gt;0.86&lt;/td&gt;&lt;td class="corr-high"&gt;0.92&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;&lt;td class="corr-high"&gt;0.84&lt;/td&gt;&lt;td class="corr-med"&gt;0.82&lt;/td&gt;&lt;td class="corr-high"&gt;0.97&lt;/td&gt;&lt;td class="corr-med"&gt;0.81&lt;/td&gt;&lt;td class="corr-high"&gt;0.89&lt;/td&gt;&lt;td class="corr-low"&gt;0.06&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Quality&lt;/td&gt;&lt;td class="corr-high"&gt;0.86&lt;/td&gt;&lt;td class="corr-med"&gt;0.78&lt;/td&gt;&lt;td class="corr-high"&gt;0.94&lt;/td&gt;&lt;td class="corr-high"&gt;0.86&lt;/td&gt;&lt;td class="corr-med"&gt;0.81&lt;/td&gt;&lt;td class="corr-high"&gt;0.84&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;&lt;td class="corr-med"&gt;0.72&lt;/td&gt;&lt;td class="corr-high"&gt;0.84&lt;/td&gt;&lt;td class="corr-med"&gt;0.75&lt;/td&gt;&lt;td class="corr-high"&gt;0.83&lt;/td&gt;&lt;td class="corr-low"&gt;0.06&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Value&lt;/td&gt;&lt;td class="corr-med"&gt;0.79&lt;/td&gt;&lt;td class="corr-med"&gt;0.81&lt;/td&gt;&lt;td class="corr-med"&gt;0.78&lt;/td&gt;&lt;td class="corr-med"&gt;0.79&lt;/td&gt;&lt;td class="corr-med"&gt;0.81&lt;/td&gt;&lt;td class="corr-med"&gt;0.82&lt;/td&gt;&lt;td class="corr-med"&gt;0.72&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;&lt;td class="corr-high"&gt;0.83&lt;/td&gt;&lt;td class="corr-med"&gt;0.78&lt;/td&gt;&lt;td class="corr-high"&gt;0.86&lt;/td&gt;&lt;td class="corr-low"&gt;0.08&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty 200 Alpha&lt;/td&gt;&lt;td class="corr-high"&gt;0.83&lt;/td&gt;&lt;td class="corr-high"&gt;0.93&lt;/td&gt;&lt;td class="corr-high"&gt;0.85&lt;/td&gt;&lt;td class="corr-high"&gt;0.88&lt;/td&gt;&lt;td class="corr-high"&gt;0.93&lt;/td&gt;&lt;td class="corr-high"&gt;0.97&lt;/td&gt;&lt;td class="corr-high"&gt;0.84&lt;/td&gt;&lt;td class="corr-high"&gt;0.83&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;&lt;td class="corr-high"&gt;0.83&lt;/td&gt;&lt;td class="corr-high"&gt;0.91&lt;/td&gt;&lt;td class="corr-low"&gt;0.06&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty SC250 Quality&lt;/td&gt;&lt;td class="corr-med"&gt;0.75&lt;/td&gt;&lt;td class="corr-high"&gt;0.88&lt;/td&gt;&lt;td class="corr-med"&gt;0.79&lt;/td&gt;&lt;td class="corr-high"&gt;0.89&lt;/td&gt;&lt;td class="corr-high"&gt;0.87&lt;/td&gt;&lt;td class="corr-med"&gt;0.81&lt;/td&gt;&lt;td class="corr-med"&gt;0.75&lt;/td&gt;&lt;td class="corr-med"&gt;0.78&lt;/td&gt;&lt;td class="corr-high"&gt;0.83&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;&lt;td class="corr-high"&gt;0.91&lt;/td&gt;&lt;td class="corr-low"&gt;0.04&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nifty Midcap 150&lt;/td&gt;&lt;td class="corr-high"&gt;0.84&lt;/td&gt;&lt;td class="corr-high"&gt;0.93&lt;/td&gt;&lt;td class="corr-high"&gt;0.88&lt;/td&gt;&lt;td class="corr-high"&gt;0.95&lt;/td&gt;&lt;td class="corr-high"&gt;0.96&lt;/td&gt;&lt;td class="corr-high"&gt;0.89&lt;/td&gt;&lt;td class="corr-high"&gt;0.83&lt;/td&gt;&lt;td class="corr-high"&gt;0.86&lt;/td&gt;&lt;td class="corr-high"&gt;0.91&lt;/td&gt;&lt;td class="corr-high"&gt;0.91&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;&lt;td class="corr-low"&gt;0.07&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Gold&lt;/td&gt;&lt;td class="corr-low"&gt;0.04&lt;/td&gt;&lt;td class="corr-low"&gt;0.06&lt;/td&gt;&lt;td class="corr-low"&gt;0.05&lt;/td&gt;&lt;td class="corr-low"&gt;0.05&lt;/td&gt;&lt;td class="corr-low"&gt;0.07&lt;/td&gt;&lt;td class="corr-low"&gt;0.06&lt;/td&gt;&lt;td class="corr-low"&gt;0.06&lt;/td&gt;&lt;td class="corr-low"&gt;0.08&lt;/td&gt;&lt;td class="corr-low"&gt;0.06&lt;/td&gt;&lt;td class="corr-low"&gt;0.04&lt;/td&gt;&lt;td class="corr-low"&gt;0.07&lt;/td&gt;&lt;td class="corr-diag"&gt;1.00&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;h2 id="conclusion"&gt;Conclusion
+&lt;/h2&gt;&lt;p&gt;While I started this analysis to understand the performance of smart-beta funds, I was more surprised by how much better the Nifty Midcap 150 performs compared to the Nifty 50 for only a modest increase in volatility.&lt;/p&gt;
+&lt;p&gt;Another interesting observation was how highly correlated all of these indices are, a lot of them move almost in-sync. This is in direct contrast to the U.S. market in which some factors even exhibit negative correlations.&lt;br&gt;
+The only instrument that had a low correlation was gold, interestingly though, even it did not have a negative correlation. Which may cast some doubt on the claim that gold can be reliably used as a hedge for portfolios.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve purposefully avoided drawing any conclusions about individual indices, because ultimately, I think that&amp;rsquo;s a call you should make yourself :)&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Hope you found this useful, or at the very least sparked some new ideas!&lt;/p&gt;</description></item></channel></rss>
